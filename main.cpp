@@ -1,7 +1,30 @@
 #include <iostream>
 #include <string>
 #include <cctype>
+#include <vector>
+
 using namespace std;
+struct dominoT
+{
+    int leftDots;
+    int rightDots;
+    int index;
+    bool taken;
+
+    dominoT(int l, int r) : leftDots(l), rightDots(r), index(0), taken(false) {};
+    void changeStatus(int i, bool t)
+    {
+        index = i;
+        taken = t;
+    }
+};
+
+ostream &operator<<(ostream &os, dominoT d)
+{
+    string out = "left: " + to_string(d.leftDots) + "\n right: " + to_string(d.rightDots) + "\n index: " + to_string(d.index) + "\n taken: " + to_string(d.taken) + "\n";
+    os << out;
+    return os;
+}
 
 void formateTxt()
 {
@@ -71,7 +94,80 @@ void printPrime()
     }
 }
 
+bool FormsDominoChain(vector<dominoT> &dominos, int r, int l)
+{
+    // cout << "v: " << dominos.size() << "\n";
+    if (dominos.empty())
+    {
+        return true;
+    }
+
+    for (int i = 0; i < dominos.size(); i++)
+    {
+        dominoT current(-1, -1);
+
+        if (!dominos[i].taken)
+        {
+            current = dominos[i];
+            // cout << "current : " << current.leftDots << " " << current.rightDots << "\n";
+        }
+        else
+        {
+            continue;
+        }
+        if (current.leftDots == r)
+        {
+            vector<dominoT> remains = dominos;
+            remains.erase(remains.begin() + i);
+            if (FormsDominoChain(remains, current.rightDots, l))
+            {
+                return true;
+            }
+        }
+        if (current.rightDots == l)
+        {
+            vector<dominoT> remains = dominos;
+            remains.erase(remains.begin() + i);
+            if (FormsDominoChain(remains, r, current.leftDots))
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 int main()
 {
+    vector<dominoT> dominos;
+    int n;
+    cout << "how many dominos to enter: ";
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        int l, r;
+        cout << "enter left and right:";
+        cin >> l >> r;
+        dominoT d(l, r);
+        dominos.push_back(d);
+    }
+    cout << "\n===========\n";
+    for (int i = 0; i < n; i++)
+    {
+        cout << dominos[i];
+    }
+    cout << "\n===========\n";
+
+    vector clone = dominos;
+    clone.erase(clone.begin() + 0);
+
+    cout << FormsDominoChain(clone, dominos[0].rightDots, dominos[0].leftDots);
+    cout << "\n===========\n";
+    for (int i = 0; i < n; i++)
+    {
+        cout << dominos[i];
+    }
+    cout << "\n===========\n";
     return 0;
 }
