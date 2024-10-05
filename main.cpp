@@ -12,16 +12,11 @@ struct dominoT
     bool taken;
 
     dominoT(int l, int r) : leftDots(l), rightDots(r), index(0), taken(false) {};
-    void changeStatus(int i, bool t)
-    {
-        index = i;
-        taken = t;
-    }
 };
 
 ostream &operator<<(ostream &os, dominoT d)
 {
-    string out = "left: " + to_string(d.leftDots) + "\n right: " + to_string(d.rightDots) + "\n index: " + to_string(d.index) + "\n taken: " + to_string(d.taken) + "\n";
+    string out = " left: " + to_string(d.leftDots) + "\n right: " + to_string(d.rightDots) + "\n index: " + to_string(d.index) + "\n taken: " + to_string(d.taken) + "\n";
     os << out;
     return os;
 }
@@ -94,11 +89,25 @@ void printPrime()
     }
 }
 
-bool FormsDominoChain(vector<dominoT> &dominos, int r, int l)
+bool FormsDominoChain(vector<dominoT> &dominos, int r, int l, dominoT base)
 {
-    // cout << "v: " << dominos.size() << "\n";
+    static vector<dominoT> out;
+    static int ri = 0, li = 0;
     if (dominos.empty())
     {
+        out.push_back(base);
+        for (int i = li; i < ri + 1; i++)
+        {
+            for (int j = 0; j < out.size(); j++)
+            {
+                if (out[j].index == i)
+                {
+                    cout << out[j].leftDots << "|" << out[j].rightDots << (i == ri ? "" : "-");
+                }
+            }
+        }
+        cout << "\n";
+
         return true;
     }
 
@@ -109,7 +118,6 @@ bool FormsDominoChain(vector<dominoT> &dominos, int r, int l)
         if (!dominos[i].taken)
         {
             current = dominos[i];
-            // cout << "current : " << current.leftDots << " " << current.rightDots << "\n";
         }
         else
         {
@@ -118,8 +126,12 @@ bool FormsDominoChain(vector<dominoT> &dominos, int r, int l)
         if (current.leftDots == r)
         {
             vector<dominoT> remains = dominos;
+            dominoT temp = remains[i];
+            temp.index = ++ri;
+            temp.taken = true;
+            out.push_back(temp);
             remains.erase(remains.begin() + i);
-            if (FormsDominoChain(remains, current.rightDots, l))
+            if (FormsDominoChain(remains, current.rightDots, l, base))
             {
                 return true;
             }
@@ -127,8 +139,12 @@ bool FormsDominoChain(vector<dominoT> &dominos, int r, int l)
         if (current.rightDots == l)
         {
             vector<dominoT> remains = dominos;
+            dominoT temp = remains[i];
+            temp.index = --li;
+            temp.taken = true;
+            out.push_back(temp);
             remains.erase(remains.begin() + i);
-            if (FormsDominoChain(remains, r, current.leftDots))
+            if (FormsDominoChain(remains, r, current.leftDots, base))
             {
                 return true;
             }
@@ -138,7 +154,7 @@ bool FormsDominoChain(vector<dominoT> &dominos, int r, int l)
     return false;
 }
 
-int main()
+void dominoCallFunction()
 {
     vector<dominoT> dominos;
     int n;
@@ -147,27 +163,23 @@ int main()
     for (int i = 0; i < n; i++)
     {
         int l, r;
-        cout << "enter left and right:";
+        cout << "enter left and right: ";
         cin >> l >> r;
         dominoT d(l, r);
         dominos.push_back(d);
     }
-    cout << "\n===========\n";
-    for (int i = 0; i < n; i++)
-    {
-        cout << dominos[i];
-    }
-    cout << "\n===========\n";
 
     vector clone = dominos;
     clone.erase(clone.begin() + 0);
 
-    cout << FormsDominoChain(clone, dominos[0].rightDots, dominos[0].leftDots);
-    cout << "\n===========\n";
-    for (int i = 0; i < n; i++)
+    if (!FormsDominoChain(clone, dominos[0].rightDots, dominos[0].leftDots, dominos[0]))
     {
-        cout << dominos[i];
+        cout << "Cannot perform a sequence";
     }
-    cout << "\n===========\n";
+}
+
+int main()
+{
+    dominoCallFunction();
     return 0;
 }
