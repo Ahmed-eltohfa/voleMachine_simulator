@@ -2,7 +2,11 @@
 #include <string>
 #include <cctype>
 #include <vector>
-
+#include <fstream>
+#include <unordered_map>
+#include <cstdlib>
+#include <ctime>
+#include <cctype>
 using namespace std;
 struct dominoT
 {
@@ -178,8 +182,91 @@ void dominoCallFunction()
     }
 }
 
+unordered_map<string, vector<string>> lookupTable = {
+    {"حرب", {"نزاع", "صراع"}},
+    {"قتال", {"اشتباك", "مواجهة"}},
+    {"سلاح", {"أداة", "معدات"}},
+    {"مقاومة", {"دفاع", "صمود"}},
+    {"جندي", {"فرد", "عنصر"}},
+    {"رصاصة", {"طلقة", "شحنة"}},
+    {"جيش", {"قوات", "تشكيل"}},
+    {"غزو", {"دخول", "اجتياح"}},
+    {"دم", {"سائل", "نسيج"}},
+    {"شهيد", {"ضحية", "فقيد"}},
+    {"قنبلة", {"عبوة", "مادة"}},
+    {"صاروخ", {"قذيفة", "مقذوف"}},
+    {"هجوم", {"عملية", "فعل"}},
+    {"انقلاب", {"تغيير", "انتقال"}},
+    {"احتجاج", {"تظاهر", "تجمع"}},
+    {"مسلح", {"متمرد", "مقاتل"}},
+    {"طائرة", {"مركبة", "ناقلة"}},
+    {"دبابة", {"عربة", "مركبة"}},
+    {"حريق", {"اشتعال", "نار"}},
+    {"تدمير", {"إتلاف", "إلغاء"}},
+    {"انفجار", {"تفجير", "حدث"}},
+    {"اغتيال", {"تصفية", "إنهاء"}},
+    {"عنف", {"شدة", "قسوة"}},
+    {"إرهاب", {"تخويف", "ذعر"}},
+    {"معركة", {"مواجهة", "مناوشة"}},
+    {"خيانة", {"غدر", "خذلان"}},
+    {"حصار", {"طوق", "إغلاق"}},
+    {"مخيم", {"معسكر", "تجمع"}},
+    {"احتلال", {"سيطرة", "إدارة"}},
+    {"تهديد", {"تحذير", "إنذار"}}};
+
+void fileReplacement()
+{
+    srand(static_cast<unsigned int>(time(0)));
+
+    ifstream file;
+    ofstream newFile("new.txt");
+    file.open("test.txt");
+    while (!file.eof())
+    {
+        string s;
+        file >> s;
+        string strippedWord = s;
+
+        // while (!strippedWord.empty() && ispunct(strippedWord.back())) | NOT WORKING |
+        // {
+        //     strippedWord.pop_back();
+        // }
+        bool isStripped = false;
+
+        if (s.substr(0, 4) == "ال")
+        {
+            isStripped = true;
+            strippedWord = s.substr(4);
+        }
+
+        if (lookupTable.find(strippedWord) != lookupTable.end())
+        {
+            const vector<string> &alternatives = lookupTable[strippedWord];
+
+            int randomIndex = rand() % alternatives.size();
+            string chosenAlternative = alternatives[randomIndex];
+
+            cout << "Original Word: " << s << "\n";
+            cout << "Random Alternative: " << "ال" << chosenAlternative << endl;
+            if (isStripped)
+            {
+                newFile << "ال";
+            }
+
+            newFile << chosenAlternative << " ";
+        }
+        else
+        {
+            newFile << s << " ";
+        }
+        // cout << s << "\n";
+    }
+
+    file.close();
+}
+
 int main()
 {
-    dominoCallFunction();
+    fileReplacement();
     return 0;
 }
