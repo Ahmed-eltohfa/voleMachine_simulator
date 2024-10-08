@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cctype>
+#include <iomanip>
 using namespace std;
 struct dominoT
 {
@@ -58,7 +59,7 @@ void formateTxt()
         }
         out += sentence[i];
     }
-    cout << out;
+    cout << "Formated text => " << out << "\n";
 }
 
 void printPrime()
@@ -84,6 +85,7 @@ void printPrime()
             }
         }
     }
+    cout << "Prime list => ";
     for (int num : numList)
     {
         if (num != 0)
@@ -91,6 +93,7 @@ void printPrime()
             cout << num << " ";
         }
     }
+    cout << "\n";
 }
 
 bool FormsDominoChain(vector<dominoT> &dominos, int r, int l, dominoT base)
@@ -111,7 +114,6 @@ bool FormsDominoChain(vector<dominoT> &dominos, int r, int l, dominoT base)
             }
         }
         cout << "\n";
-
         return true;
     }
 
@@ -180,6 +182,7 @@ void dominoCallFunction()
     {
         cout << "Cannot perform a sequence";
     }
+    cout << "\n";
 }
 
 unordered_map<string, vector<string>> lookupTable = {
@@ -214,13 +217,16 @@ unordered_map<string, vector<string>> lookupTable = {
     {"احتلال", {"سيطرة", "إدارة"}},
     {"تهديد", {"تحذير", "إنذار"}}};
 
-void fileReplacement()
+void fileReplacement(string fileName)
 {
     srand(static_cast<unsigned int>(time(0)));
-
     ifstream file;
-    ofstream newFile("new.txt");
-    file.open("test.txt");
+    file.open(fileName);
+    string newfileName;
+    cout << "Please enter your file name to output here, and don't forget the .txt extension : ";
+    cin >> newfileName;
+
+    ofstream newFile(newfileName);
     while (!file.eof())
     {
         string s;
@@ -246,8 +252,9 @@ void fileReplacement()
             int randomIndex = rand() % alternatives.size();
             string chosenAlternative = alternatives[randomIndex];
 
+            cout << "Note: your terminal should support unicode to see the next lines :)\n";
             cout << "Original Word: " << s << "\n";
-            cout << "Random Alternative: " << "ال" << chosenAlternative << endl;
+            cout << "Random Alternative: " << "ال" << chosenAlternative << "\n";
             if (isStripped)
             {
                 newFile << "ال";
@@ -267,6 +274,94 @@ void fileReplacement()
 
 int main()
 {
-    fileReplacement();
+    cout << setw(25) << " " << "Welcome to Section 3 of the Problem Sheet, Task 1\n";
+    while (true)
+    {
+        cout << "A)Problem 1 (Formate text)\n";
+        cout << "B)Problem 4 (Print prime numbers within range)\n";
+        cout << "C)Problem 7 (The game of dominos)\n";
+        cout << "D)Problem 10 (Censorship of file in Arabic)\n";
+        cout << "Please choose a char: ";
+        string Input;
+        cin >> Input;
+        if (Input.size() == 1)
+        {
+            Input[0] = tolower(Input[0]);
+        }
+        while (Input.size() != 1 || (Input != "a" && Input != "b" && Input != "c" && Input != "d"))
+        {
+            cout << "Invalid input PLEASE a VALID choose one of these choices (A,B,C,D)\n";
+            cout << "Please choose a char: ";
+            cin >> Input;
+            if (Input.size() == 1)
+            {
+                Input[0] = tolower(Input[0]);
+            }
+        }
+
+        if (Input == "a")
+        {
+            cout << setw(12) << " " << "Problem 1\n";
+            cin.ignore();
+            formateTxt();
+        }
+        else if (Input == "b")
+        {
+            cout << setw(12) << " " << "Problem 4\n";
+            cin.ignore();
+            printPrime();
+        }
+        else if (Input == "c")
+        {
+            cout << setw(12) << " " << "Problem 7\n";
+            cin.ignore();
+            dominoCallFunction();
+        }
+        else
+        {
+            cout << setw(12) << " " << "Problem 12\n";
+            string FileName;
+            cout << "Please enter your file name here, and don't forget the .txt extension : ";
+            cin >> FileName;
+            cout << "\n";
+            fstream dataFile;
+            dataFile.open(FileName);
+            while (dataFile.fail())
+            {
+                cout << "File open error! Please enter a valid file name: ";
+                cin >> FileName;
+                dataFile.open(FileName);
+                cout << "\n";
+            }
+            fileReplacement(FileName);
+            cout << "\n";
+        }
+
+        cout << "Thank you for using my program :)\n";
+        cout << "A)Again\nB)Exit\n";
+        string again;
+        cin >> again;
+        if (again.size() == 1)
+        {
+            again[0] = tolower(again[0]);
+        }
+        while (again.size() != 1 || (again != "a" && again != "b"))
+        {
+            cout << "Invalid input PLEASE choose one of these choices (A,B)\n";
+            cout << "A)Again\n";
+            cout << "B)Exit\n";
+            cin >> again;
+            if (again.size() == 1)
+            {
+                again[0] = tolower(again[0]);
+            }
+        }
+        if (again == "b")
+        {
+            cout << "BYE :)\n";
+            break;
+        }
+        cout << "\nPlease choose a char\n\n";
+    }
     return 0;
 }
