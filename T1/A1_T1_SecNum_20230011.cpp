@@ -1,3 +1,8 @@
+// Name     : Ahmed Ehab Salah Elden
+// ID       : 20230011
+// Problems : (1) formate text (4) print prime nums (7) forms domino chain (11) file Censorship in arabic
+// version  : (1.4)v
+
 #include <iostream>
 #include <string>
 #include <cctype>
@@ -220,6 +225,7 @@ unordered_map<string, vector<string>> lookupTable = {
 void fileReplacement(string fileName)
 {
     srand(static_cast<unsigned int>(time(0)));
+    cout << "Note: your terminal should support unicode to see the next lines :)\n";
     ifstream file;
     file.open(fileName);
     string newfileName;
@@ -252,7 +258,6 @@ void fileReplacement(string fileName)
             int randomIndex = rand() % alternatives.size();
             string chosenAlternative = alternatives[randomIndex];
 
-            cout << "Note: your terminal should support unicode to see the next lines :)\n";
             cout << "Original Word: " << s << "\n";
             cout << "Random Alternative: " << "ال" << chosenAlternative << "\n";
             if (isStripped)
@@ -319,7 +324,7 @@ int main()
         }
         else
         {
-            cout << setw(12) << " " << "Problem 12\n";
+            cout << setw(12) << " " << "Problem 10\n";
             string FileName;
             cout << "Please enter your file name here, and don't forget the .txt extension : ";
             cin >> FileName;
