@@ -81,30 +81,6 @@ bool Polynomial::operator==(const Polynomial &other) const
     return coeffs == other.coeffs;
 }
 
-// Output operator (friend function)
-// ostream &operator<<(ostream &out, const Polynomial &poly)
-// {
-//     for (int i = poly.coeffs.size() - 1; i >= 0; --i)
-//     {
-//         if (poly.coeffs[i] != 0)
-//         {
-//             if (i != poly.coeffs.size() - 1 && poly.coeffs[i] > 0)
-//             {
-//                 out << "+";
-//             }
-//             out << poly.coeffs[i];
-//             if (i > 0)
-//             {
-//                 out << "x";
-//                 if (i > 1)
-//                 {
-//                     out << "^" << i;
-//                 }
-//             }
-//         }
-//     }
-//     return out;
-// }
 ostream &operator<<(ostream &out, const Polynomial &poly)
 {
     bool isFirstTerm = true;
