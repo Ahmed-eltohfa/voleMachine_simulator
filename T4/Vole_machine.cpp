@@ -134,10 +134,14 @@ void Memory::store(int address, int value)
 
 void Memory::displayMemory() const
 {
-    cout << "Memory Contents:" << "\n";
-    for (size_t i = 0; i < 10; ++i) // Change later
+    cout << "\n--- Memory Contents (First 256 Addresses) ---\n";
+    cout << " Address | Value\n";
+    cout << "----------------\n";
+
+    for (size_t i = 0; i < 256; ++i) // Limit display to 256 addresses
     {
-        cout << "Address " << i << ": " << memoryCells[i] << "\n";
+        cout << " 0x" << hex << setw(2) << setfill('0') << i
+             << "    | 0x" << setw(2) << setfill('0') << memoryCells[i] << "\n";
     }
 }
 
@@ -186,11 +190,10 @@ void JumpInstruction::execute(Machine &machine)
 void HaltInstruction::execute(Machine &machine)
 {
     machine.halt();
-    cout << "Machine execution has stopped\n";
     cout << "Halt instruction success \n";
 }
 
 void MoveInstruction::execute(Machine &machine)
 {
-    cout << "Move instruction success";
+    machine.getRegister(regSrc2).setValue(machine.getRegister(regSrc1).getValue());
 }
