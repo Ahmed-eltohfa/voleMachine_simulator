@@ -7,8 +7,8 @@
 #include <iostream>
 #include <map>
 #include <cctype>
+#include <iomanip>
 using namespace std;
-
 class Machine;
 
 // Base class for Instructions (abstract)
@@ -91,6 +91,8 @@ public:
     void displayStatus() const;                      // Display the current state of the machine
     bool running() const { return isRunning; }
     void halt() { isRunning = false; }
+    bool getRunning() { return isRunning; }
+    void start() { isRunning = true; }
 
     // Access to internal components
     Register &getRegister(int index) { return registers[index]; }
@@ -154,6 +156,18 @@ public:
 class HaltInstruction : public Instruction
 {
 public:
+    void execute(Machine &machine) override;
+};
+
+class MoveInstruction : public Instruction
+{
+private:
+    int regSrc1;
+    int regSrc2;
+
+public:
+    MoveInstruction(int reg, int reg2) : regSrc1(reg), regSrc2(reg2) {}
+
     void execute(Machine &machine) override;
 };
 

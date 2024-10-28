@@ -1,6 +1,7 @@
 #include "Vole_machine.h"
 #include "Vole_machine.cpp"
 #include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -25,14 +26,24 @@ vector<string> loadProgramFromFile(const string &filePath)
     return program;
 }
 
+// int main()
+// {
+//     Machine voleMachine;       // Initialize the Vole machine object
+//     vector<string> program(1); // Stores the loaded program
+//     bool exitFlag = false;
+//     int choice;
+//     program = loadProgramFromFile("instruction.txt");
+//     cout << "hello ";
+//     cout << program.size();
+//     return 0;
+// }
+
 int main()
 {
-    Machine voleMachine;    // Initialize the Vole machine object
-    vector<string> program; // Stores the loaded program
+    Machine voleMachine;       // Initialize the Vole machine object
+    vector<string> program(1); // Stores the loaded program
     bool exitFlag = false;
     int choice;
-
-    // Simple menu loop
     while (!exitFlag)
     {
         cout << "\n--- Vole Machine Simulator ---" << "\n";
@@ -42,65 +53,67 @@ int main()
         cout << "4. Exit" << "\n";
         cout << "Enter your choice: ";
         cin >> choice;
-
-        switch (choice)
-        {
-        case 1: // load instruction file
-        {
+        if (choice == 1)
+        { // Load instruction file
             string filePath;
             cout << "Enter file path: ";
             cin >> filePath;
             program = loadProgramFromFile(filePath);
+
             if (!program.empty())
             {
                 voleMachine.loadProgram(program);
                 cout << "Program loaded successfully." << "\n";
+                voleMachine.getPC().setValue(0);
+                voleMachine.start();
             }
-            break;
         }
-        case 2: // Execute
-        {
+        else if (choice == 2)
+        { // Execute
             if (program.empty())
             {
                 cout << "No program loaded! Please load a program first." << "\n";
-                break;
             }
-
-            // Step-by-step execution
-            while (voleMachine.running())
+            else
             {
-                voleMachine.fetchAndExecute();
-                voleMachine.displayStatus();
-
-                char stepChoice;
-                cout << "Press 'n' to continue, or 'q' to stop: ";
-                cin >> stepChoice;
-
-                if (stepChoice == 'q')
+                // Step-by-step execution
+                while (voleMachine.running())
                 {
-                    break;
+                    voleMachine.fetchAndExecute();
+                    voleMachine.displayStatus();
+                    if (voleMachine.getRunning() == false)
+                    {
+                        cout << "End Of Program\n";
+                        break;
+                    }
+
+                    char stepChoice;
+                    cout << "Press 'n' to continue, or 'q' to stop: ";
+                    cin >> stepChoice;
+
+                    if (stepChoice == 'q')
+                    {
+                        break;
+                    }
                 }
             }
-            break;
         }
-        case 3: // Display
-        {
+        else if (choice == 3)
+        { // Display
             // Display the current status of the machine
             voleMachine.displayStatus();
-            break;
         }
-        case 4:
-        {
+        else if (choice == 4)
+        { // Exit
             exitFlag = true;
-            break;
         }
-        default:
-        {
+        else
+        { // Invalid choice
             cout << "Invalid choice. Please try again." << "\n";
-        }
         }
     }
 
     cout << "Exiting simulator. Goodbye!" << "\n";
+
     return 0;
 }
