@@ -109,25 +109,35 @@ void Machine::displayStatus() const
 
 int Memory::load(int address) const
 {
-    if (address <= 255)
+    if (address >= 0 && address < memoryCells.size())
     {
         return memoryCells[address];
     }
-
-    return 0;
+    else
+    {
+        cerr << "Error: Invalid memory access at address " << address << "\n";
+        return 0;
+    }
 }
 
 void Memory::store(int address, int value)
 {
-    memoryCells[address] = value;
+    if (address >= 0 && address < memoryCells.size())
+    {
+        memoryCells[address] = value;
+    }
+    else
+    {
+        cout << "Error: Invalid memory access at address " << address << "\n";
+    }
 }
 
 void Memory::displayMemory() const
 {
-    cout << "mem\n";
-    for (int i = 0; i < 12; i++)
+    cout << "Memory Contents:" << "\n";
+    for (size_t i = 0; i < 10; ++i) // Change later
     {
-        cout << hex << memoryCells[i] << "\n";
+        cout << "Address " << i << ": " << memoryCells[i] << "\n";
     }
 }
 
