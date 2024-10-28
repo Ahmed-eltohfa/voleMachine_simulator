@@ -192,5 +192,5 @@ void HaltInstruction::execute(Machine &machine)
 
 void MoveInstruction::execute(Machine &machine)
 {
-    cout << "Move instruction success";
+    machine.getRegister(regSrc2).setValue(machine.getRegister(regSrc1));
 }
