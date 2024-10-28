@@ -6,16 +6,10 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <bitset>
 using namespace std;
 
-class Machine
-{
-public:
-    Machine();
-    ~Machine();
-
-private:
-};
+class Machine;
 
 // Base class for Instructions (abstract)
 class Instruction
@@ -111,9 +105,10 @@ class LoadInstruction : public Instruction
 private:
     int registerIndex;
     int address;
+    bool value;
 
 public:
-    LoadInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
+    LoadInstruction(int reg, int addr, bool vlu) : registerIndex(reg), address(addr), value(vlu) {}
 
     void execute(Machine &machine) override;
 };
@@ -124,9 +119,10 @@ private:
     int regDst;
     int regSrc1;
     int regSrc2;
+    bool isFloat;
 
 public:
-    AddInstruction(int dst, int src1, int src2) : regDst(dst), regSrc1(src1), regSrc2(src2) {}
+    AddInstruction(int dst, int src1, int src2, bool flt) : regDst(dst), regSrc1(src1), regSrc2(src2), isFloat(flt) {}
 
     void execute(Machine &machine) override;
 };
