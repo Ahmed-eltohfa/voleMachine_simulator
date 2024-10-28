@@ -7,8 +7,9 @@
 #include <iostream>
 #include <map>
 #include <bitset>
+#include <cctype>
+#include <iomanip>
 using namespace std;
-
 class Machine;
 
 // Base class for Instructions (abstract)
@@ -35,7 +36,7 @@ public:
 class Memory
 {
 private:
-    std::vector<int> memoryCells;
+    vector<int> memoryCells;
     const int memorySize = 256; // Example size (can be adjusted)
 
 public:
@@ -77,7 +78,7 @@ public:
 class Machine
 {
 private:
-    std::vector<Register> registers; // 16 registers (0-15)
+    vector<Register> registers; // 16 registers (0-15)
     Memory memory;
     ProgramCounter pc;
     InstructionRegister ir;
@@ -86,11 +87,13 @@ private:
 public:
     Machine() : registers(16), isRunning(true) {};
 
-    void loadProgram(const std::vector<std::string> &program); // Load program into memory
-    void fetchAndExecute();                                    // Fetch instruction and execute it
-    void displayStatus() const;                                // Display the current state of the machine
+    void loadProgram(const vector<string> &program); // Load program into memory
+    void fetchAndExecute();                          // Fetch instruction and execute it
+    void displayStatus() const;                      // Display the current state of the machine
     bool running() const { return isRunning; }
     void halt() { isRunning = false; }
+    bool getRunning() { return isRunning; }
+    void start() { isRunning = true; }
 
     // Access to internal components
     Register &getRegister(int index) { return registers[index]; }
@@ -157,6 +160,16 @@ public:
     void execute(Machine &machine) override;
 };
 
-#endif
+class MoveInstruction : public Instruction
+{
+private:
+    int regSrc1;
+    int regSrc2;
 
-// 14a3
+public:
+    MoveInstruction(int reg, int reg2) : regSrc1(reg), regSrc2(reg2) {}
+
+    void execute(Machine &machine) override;
+};
+
+#endif
