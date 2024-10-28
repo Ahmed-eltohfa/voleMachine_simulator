@@ -1,15 +1,15 @@
 #include "Vole_machine.h"
 
-Machine::Machine()
+void Machine::loadProgram(const vector<string> &program)
 {
-}
-
-Machine::~Machine()
-{
-}
-
-Machine::loadProgram(const std::vector<std::string> &program)()
-{
+    for (int i = 0; i < program.size(); i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            int byte = stoi(program[i].substr(j * 2, j + 2), 0, 16);
+            getMemory().store(2 * i + j, byte);
+        }
+    }
 }
 
 void Machine::fetchAndExecute()

@@ -6,16 +6,10 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <cctype>
 using namespace std;
 
-class Machine
-{
-public:
-    Machine();
-    ~Machine();
-
-private:
-};
+class Machine;
 
 // Base class for Instructions (abstract)
 class Instruction
@@ -41,7 +35,7 @@ public:
 class Memory
 {
 private:
-    std::vector<int> memoryCells;
+    vector<int> memoryCells;
     const int memorySize = 256; // Example size (can be adjusted)
 
 public:
@@ -83,7 +77,7 @@ public:
 class Machine
 {
 private:
-    std::vector<Register> registers; // 16 registers (0-15)
+    vector<Register> registers; // 16 registers (0-15)
     Memory memory;
     ProgramCounter pc;
     InstructionRegister ir;
@@ -92,9 +86,9 @@ private:
 public:
     Machine() : registers(16), isRunning(true) {};
 
-    void loadProgram(const std::vector<std::string> &program); // Load program into memory
-    void fetchAndExecute();                                    // Fetch instruction and execute it
-    void displayStatus() const;                                // Display the current state of the machine
+    void loadProgram(const vector<string> &program); // Load program into memory
+    void fetchAndExecute();                          // Fetch instruction and execute it
+    void displayStatus() const;                      // Display the current state of the machine
     bool running() const { return isRunning; }
     void halt() { isRunning = false; }
 
@@ -111,9 +105,10 @@ class LoadInstruction : public Instruction
 private:
     int registerIndex;
     int address;
+    bool value;
 
 public:
-    LoadInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
+    LoadInstruction(int reg, int addr, bool vlu) : registerIndex(reg), address(addr), value(vlu) {}
 
     void execute(Machine &machine) override;
 };
@@ -124,9 +119,10 @@ private:
     int regDst;
     int regSrc1;
     int regSrc2;
+    bool isFloat;
 
 public:
-    AddInstruction(int dst, int src1, int src2) : regDst(dst), regSrc1(src1), regSrc2(src2) {}
+    AddInstruction(int dst, int src1, int src2, bool flt) : regDst(dst), regSrc1(src1), regSrc2(src2), isFloat(flt) {}
 
     void execute(Machine &machine) override;
 };
@@ -162,5 +158,3 @@ public:
 };
 
 #endif
-
-// 14a3
