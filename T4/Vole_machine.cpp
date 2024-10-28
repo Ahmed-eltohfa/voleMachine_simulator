@@ -195,9 +195,5 @@ void HaltInstruction::execute(Machine &machine)
 
 void MoveInstruction::execute(Machine &machine)
 {
-<<<<<<< HEAD
     machine.getRegister(regSrc2).setValue(machine.getRegister(regSrc1).getValue());
-=======
-    machine.getRegister(regSrc2).setValue(machine.getRegister(regSrc1));
->>>>>>> 40006ce75cd51a44d052f34b9691a928f491d74f
 }
