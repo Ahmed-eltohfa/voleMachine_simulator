@@ -22,15 +22,29 @@ void Machine::displayStatus() const
 
 int Memory::load(int address) const
 {
-    return 0;
+    if (address >= 0 && address < memoryCells.size()) {
+        return memoryCells[address];
+    } else {
+        cerr << "Error: Invalid memory access at address " << address << endl;
+        return 0; 
+    }
 }
 
 void Memory::store(int address, int value)
-{
+{    
+    if (address >= 0 && address < memoryCells.size()) {
+        memoryCells[address] = value;
+    } else {
+        cout << "Error: Invalid memory access at address " << address << endl;
+    }
 }
 
 void Memory::displayMemory() const
 {
+    cout << "Memory Contents:" << endl;
+    for (size_t i = 0; i < memoryCells.size(); ++i) {
+        cout << "Address " << i << ": " << memoryCells[i] << endl;
+    }
 }
 
 void LoadInstruction::execute(Machine &machine)
