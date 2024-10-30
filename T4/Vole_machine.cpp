@@ -77,6 +77,12 @@ void Machine::fetchAndExecute()
         Instruction *temp = new AddInstruction(ins);
         ir.set(temp);
     }
+    else if (op == '8')
+    {
+        MultiplyInstruction ins(reg, three, four);
+        Instruction *temp = new MultiplyInstruction(ins);
+        ir.set(temp);
+    }
     else if (op == 'B' || op == 'b')
     {
         JumpInstruction ins(reg, msgAdrs);
@@ -216,5 +222,13 @@ void MoveInstruction::execute(Machine &machine)
 {
 
     machine.getRegister(regSrc2).setValue(machine.getRegister(regSrc1).getValue());
+
+}
+
+void MultiplyInstruction::execute(Machine &machine) {
+
+    
+    int result = machine.getRegister(regSrc1).getValue() * machine.getRegister(regSrc2).getValue();
+    machine.getRegister(regDst).setValue(result);
 
 }
