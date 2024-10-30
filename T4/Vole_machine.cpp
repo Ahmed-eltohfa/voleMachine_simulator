@@ -134,16 +134,35 @@ void Memory::store(int address, int value)
 
 void Memory::displayMemory() const
 {
-    cout << "\n--- Memory Contents (First 256 Addresses) ---\n";
-    cout << " Address | Value\n";
-    cout << "----------------\n";
-
-    for (size_t i = 0; i < 256; ++i) // Limit display to 256 addresses
+    cout << "\n--- Memory Contents (16x16 Display) ---\n";
+    cout << "      ";
+    
+    // Display column headers
+    for (int col = 0; col < 16; ++col)
     {
-        cout << " 0x" << hex << setw(2) << setfill('0') << i
-             << "    | 0x" << setw(2) << setfill('0') << memoryCells[i] << "\n";
+        cout << " " << hex << uppercase << setw(2) << setfill('0') << col << " ";
+    }
+    cout << "\n";
+
+    cout << "    ";
+    cout << string(65, '-') << "\n";
+
+    // Display each row with row headers
+    for (int row = 0; row < 16; ++row)
+    {
+        // Display row header
+        cout << "0x" << hex << uppercase << setw(2) << setfill('0') << row * 16 << " | ";
+
+        // Display memory contents in 16 columns
+        for (int col = 0; col < 16; ++col)
+        {
+            int address = row * 16 + col;
+            cout << " " << setw(2) << setfill('0') << memoryCells[address] << " ";
+        }
+        cout << "\n";
     }
 }
+
 
 void LoadInstruction::execute(Machine &machine)
 {

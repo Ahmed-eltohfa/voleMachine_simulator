@@ -10,6 +10,7 @@
 #include <cctype>
 #include <iomanip>
 using namespace std;
+
 class Machine;
 
 // Base class for Instructions (abstract)
@@ -102,7 +103,7 @@ public:
     InstructionRegister &getIR() { return ir; }
 };
 
-// Derived instruction classes (examples)
+// Derived instruction classes
 class LoadInstruction : public Instruction
 {
 private:
@@ -172,4 +173,92 @@ public:
     void execute(Machine &machine) override;
 };
 
-#endif
+// New Instructions
+class SubtractInstruction : public Instruction
+{
+private:
+    int regDst;
+    int regSrc1;
+    int regSrc2;
+
+public:
+    SubtractInstruction(int dst, int src1, int src2) : regDst(dst), regSrc1(src1), regSrc2(src2) {}
+
+    void execute(Machine &machine) override;
+};
+
+class MultiplyInstruction : public Instruction
+{
+private:
+    int regDst;
+    int regSrc1;
+    int regSrc2;
+
+public:
+    MultiplyInstruction(int dst, int src1, int src2) : regDst(dst), regSrc1(src1), regSrc2(src2) {}
+
+    void execute(Machine &machine) override;
+};
+
+class DivideInstruction : public Instruction
+{
+private:
+    int regDst;
+    int regSrc1;
+    int regSrc2;
+
+public:
+    DivideInstruction(int dst, int src1, int src2) : regDst(dst), regSrc1(src1), regSrc2(src2) {}
+
+    void execute(Machine &machine) override;
+};
+
+class InputInstruction : public Instruction
+{
+private:
+    int registerIndex;
+    int address;
+
+public:
+    InputInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
+
+    void execute(Machine &machine) override;
+};
+
+class OrInstruction : public Instruction
+{
+private:
+    int registerIndex;
+    int address;
+
+public:
+    OrInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
+
+    void execute(Machine &machine) override;
+};
+
+class AndInstruction : public Instruction
+{
+private:
+    int registerIndex;
+    int address;
+
+public:
+    AndInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
+
+    void execute(Machine &machine) override;
+};
+
+class XorInstruction : public Instruction
+{
+private:
+    int registerIndex;
+    int address;
+
+public:
+    XorInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
+
+    void execute(Machine &machine) override;
+};
+
+#endif // VOLE_MACHINE_H
