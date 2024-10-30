@@ -228,11 +228,12 @@ public:
 class OrInstruction : public Instruction
 {
 private:
-    int registerIndex;
-    int address;
+    int regDst;
+    int regSrc1;
+    int regSrc2;
 
 public:
-    OrInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
+    OrInstruction(int dst, int src1, int src2) : regDst(dst), regSrc1(src1), regSrc2(src2) {}
 
     void execute(Machine &machine) override;
 };
@@ -240,11 +241,12 @@ public:
 class AndInstruction : public Instruction
 {
 private:
-    int registerIndex;
-    int address;
+    int regDst;
+    int regSrc1;
+    int regSrc2;
 
 public:
-    AndInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
+    AndInstruction(int dst, int src1, int src2) : regDst(dst), regSrc1(src1), regSrc2(src2) {}
 
     void execute(Machine &machine) override;
 };

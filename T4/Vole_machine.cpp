@@ -77,10 +77,28 @@ void Machine::fetchAndExecute()
         Instruction *temp = new AddInstruction(ins);
         ir.set(temp);
     }
+    else if (op == '7')
+    {
+        SubtractInstruction ins(reg, three, four);
+        Instruction *temp = new SubtractInstruction(ins);
+        ir.set(temp);
+    }
     else if (op == '8')
     {
         MultiplyInstruction ins(reg, three, four);
         Instruction *temp = new MultiplyInstruction(ins);
+        ir.set(temp);
+    }
+    else if (op == '9')
+    {
+        DivideInstruction ins(reg, three, four);
+        Instruction *temp = new DivideInstruction(ins);
+        ir.set(temp);
+    }
+    else if (op == 'A' || op == 'a')
+    {
+        OrInstruction ins(reg, three, four);
+        Instruction *temp = new OrInstruction(ins);
         ir.set(temp);
     }
     else if (op == 'B' || op == 'b')
@@ -93,6 +111,13 @@ void Machine::fetchAndExecute()
     {
         halt();
     }
+    else if (op == 'D' || op == 'd')
+    {
+        AndInstruction ins(reg, three, four);
+        Instruction *temp = new AndInstruction(ins);
+        ir.set(temp);
+    }
+
     else
     {
         return;
@@ -142,7 +167,7 @@ void Memory::displayMemory() const
 {
     cout << "\n--- Memory Contents (16x16 Display) ---\n";
     cout << "      ";
-    
+
     // Display column headers
     for (int col = 0; col < 16; ++col)
     {
@@ -168,7 +193,6 @@ void Memory::displayMemory() const
         cout << "\n";
     }
 }
-
 
 void LoadInstruction::execute(Machine &machine)
 {
@@ -223,10 +247,35 @@ void MoveInstruction::execute(Machine &machine)
     machine.getRegister(regSrc2).setValue(machine.getRegister(regSrc1).getValue());
 }
 
-void MultiplyInstruction::execute(Machine &machine) {
+void MultiplyInstruction::execute(Machine &machine)
+{
 
-    
     int result = machine.getRegister(regSrc1).getValue() * machine.getRegister(regSrc2).getValue();
     machine.getRegister(regDst).setValue(result);
+}
 
+void SubtractInstruction::execute(Machine &machine)
+{
+
+    int result = (machine.getRegister(regSrc1).getValue() - machine.getRegister(regSrc2).getValue()) & 0xFFFF;
+    machine.getRegister(regDst).setValue(result);
+}
+
+void DivideInstruction::execute(Machine &machine)
+{
+
+    int result = (machine.getRegister(regSrc1).getValue() / machine.getRegister(regSrc2).getValue());
+    machine.getRegister(regDst).setValue(result);
+}
+
+void OrInstruction::execute(Machine &machine)
+{
+    int result = machine.getRegister(regSrc1).getValue() | machine.getRegister(regSrc2).getValue();
+    machine.getRegister(regDst).setValue(result);
+}
+
+void AndInstruction::execute(Machine &machine)
+{
+    int result = machine.getRegister(regSrc1).getValue() & machine.getRegister(regSrc2).getValue();
+    machine.getRegister(regDst).setValue(result);
 }
