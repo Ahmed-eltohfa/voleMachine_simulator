@@ -155,6 +155,18 @@ public:
     void execute(Machine &machine) override;
 };
 
+class DJumpInstruction : public Instruction
+{
+private:
+    int registerIndex;
+    int address;
+
+public:
+    DJumpInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
+
+    void execute(Machine &machine) override;
+};
+
 class HaltInstruction : public Instruction
 {
 public:
@@ -174,31 +186,6 @@ public:
 };
 
 // New Instructions
-class SubtractInstruction : public Instruction
-{
-private:
-    int regDst;
-    int regSrc1;
-    int regSrc2;
-
-public:
-    SubtractInstruction(int dst, int src1, int src2) : regDst(dst), regSrc1(src1), regSrc2(src2) {}
-
-    void execute(Machine &machine) override;
-};
-
-class MultiplyInstruction : public Instruction
-{
-private:
-    int regDst;
-    int regSrc1;
-    int regSrc2;
-
-public:
-    MultiplyInstruction(int dst, int src1, int src2) : regDst(dst), regSrc1(src1), regSrc2(src2) {}
-
-    void execute(Machine &machine) override;
-};
 
 class OrInstruction : public Instruction
 {
@@ -229,11 +216,24 @@ public:
 class XorInstruction : public Instruction
 {
 private:
-    int registerIndex;
-    int address;
+    int regDst;
+    int regSrc1;
+    int regSrc2;
 
 public:
-    XorInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
+    XorInstruction(int dst, int src1, int src2) : regDst(dst), regSrc1(src1), regSrc2(src2) {}
+
+    void execute(Machine &machine) override;
+};
+
+class RotateInstruction : public Instruction
+{
+private:
+    int reg;
+    int steps;
+
+public:
+    RotateInstruction(int reg, int rs) : reg(reg), steps(rs) {}
 
     void execute(Machine &machine) override;
 };
