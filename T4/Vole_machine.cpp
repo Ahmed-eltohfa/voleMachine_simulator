@@ -64,6 +64,9 @@ void Machine::fetchAndExecute()
         MoveInstruction ins(three, four);
         Instruction *temp = new MoveInstruction(ins);
         ir.set(temp);
+        ir.get()->execute(*this);
+        delete ir.get();
+        return;
     }
     else if (op == '5')
     {
@@ -77,28 +80,28 @@ void Machine::fetchAndExecute()
         Instruction *temp = new AddInstruction(ins);
         ir.set(temp);
     }
-    else if (op == '7')
+    else if (op == '7' )
     {
-        SubtractInstruction ins(reg, three, four);
-        Instruction *temp = new SubtractInstruction(ins);
+        OrInstruction ins(reg, three, four);
+        Instruction *temp = new OrInstruction(ins);
         ir.set(temp);
     }
     else if (op == '8')
     {
-        MultiplyInstruction ins(reg, three, four);
-        Instruction *temp = new MultiplyInstruction(ins);
+        AndInstruction ins(reg, three, four);
+        Instruction *temp = new AndInstruction(ins);
         ir.set(temp);
     }
     else if (op == '9')
     {
-        DivideInstruction ins(reg, three, four);
-        Instruction *temp = new DivideInstruction(ins);
+        XorInstruction ins(reg, three, four);
+        Instruction *temp = new XorInstruction(ins);
         ir.set(temp);
     }
     else if (op == 'A' || op == 'a')
     {
-        OrInstruction ins(reg, three, four);
-        Instruction *temp = new OrInstruction(ins);
+        RotateInstruction ins(reg, four );
+        Instruction *temp = new RotateInstruction(ins);
         ir.set(temp);
     }
     else if (op == 'B' || op == 'b')
@@ -110,20 +113,15 @@ void Machine::fetchAndExecute()
     else if (op == 'C' || op == 'c')
     {
         halt();
+        return;
     }
-    else if (op == 'D' || op == 'd')
-    {
-        AndInstruction ins(reg, three, four);
-        Instruction *temp = new AndInstruction(ins);
-        ir.set(temp);
-    }
-
-    else
+    else 
     {
         return;
     }
-
+    
     ir.get()->execute(*this);
+    delete ir.get();
     pc.increment();
     pc.increment();
 }
@@ -247,27 +245,6 @@ void MoveInstruction::execute(Machine &machine)
     machine.getRegister(regSrc2).setValue(machine.getRegister(regSrc1).getValue());
 }
 
-void MultiplyInstruction::execute(Machine &machine)
-{
-
-    int result = machine.getRegister(regSrc1).getValue() * machine.getRegister(regSrc2).getValue();
-    machine.getRegister(regDst).setValue(result);
-}
-
-void SubtractInstruction::execute(Machine &machine)
-{
-
-    int result = (machine.getRegister(regSrc1).getValue() - machine.getRegister(regSrc2).getValue()) & 0xFFFF;
-    machine.getRegister(regDst).setValue(result);
-}
-
-void DivideInstruction::execute(Machine &machine)
-{
-
-    int result = (machine.getRegister(regSrc1).getValue() / machine.getRegister(regSrc2).getValue());
-    machine.getRegister(regDst).setValue(result);
-}
-
 void OrInstruction::execute(Machine &machine)
 {
     int result = machine.getRegister(regSrc1).getValue() | machine.getRegister(regSrc2).getValue();
@@ -278,4 +255,16 @@ void AndInstruction::execute(Machine &machine)
 {
     int result = machine.getRegister(regSrc1).getValue() & machine.getRegister(regSrc2).getValue();
     machine.getRegister(regDst).setValue(result);
+}
+
+void XorInstruction::execute(Machine &machine)
+{
+    int result = machine.getRegister(regSrc1).getValue() ^ machine.getRegister(regSrc2).getValue();
+    machine.getRegister(regDst).setValue(result);
+}
+
+
+void RotateInstruction::execute(Machine &machine)
+{
+    machine.getRegister(reg).setValue( machine.getRegister(reg).getValue()  >> steps );
 }
