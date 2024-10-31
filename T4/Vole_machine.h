@@ -200,31 +200,6 @@ public:
     void execute(Machine &machine) override;
 };
 
-class DivideInstruction : public Instruction
-{
-private:
-    int regDst;
-    int regSrc1;
-    int regSrc2;
-
-public:
-    DivideInstruction(int dst, int src1, int src2) : regDst(dst), regSrc1(src1), regSrc2(src2) {}
-
-    void execute(Machine &machine) override;
-};
-
-class InputInstruction : public Instruction
-{
-private:
-    int registerIndex;
-    int address;
-
-public:
-    InputInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
-
-    void execute(Machine &machine) override;
-};
-
 class OrInstruction : public Instruction
 {
 private:

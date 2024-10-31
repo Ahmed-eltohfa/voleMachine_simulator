@@ -113,8 +113,8 @@ void Machine::fetchAndExecute()
     }
     else if (op == 'D' || op == 'd')
     {
-        AndInstruction ins(reg, three, four);
-        Instruction *temp = new AndInstruction(ins);
+        JumpInstruction ins(reg, msgAdrs);
+        Instruction *temp = new JumpInstruction(ins);
         ir.set(temp);
     }
 
@@ -278,4 +278,12 @@ void AndInstruction::execute(Machine &machine)
 {
     int result = machine.getRegister(regSrc1).getValue() & machine.getRegister(regSrc2).getValue();
     machine.getRegister(regDst).setValue(result);
+}
+
+void JumpInstruction::execute(Machine &machine)
+{
+    if (machine.getRegister(registerIndex).getValue() > machine.getRegister(0).getValue())
+    {
+        machine.getPC().setValue(address);
+    }
 }
