@@ -26,17 +26,7 @@ vector<string> loadProgramFromFile(const string &filePath)
     return program;
 }
 
-// int main()
-// {
-//     Machine voleMachine;       // Initialize the Vole machine object
-//     vector<string> program(1); // Stores the loaded program
-//     bool exitFlag = false;
-//     int choice;
-//     program = loadProgramFromFile("instruction.txt");
-//     cout << "hello ";
-//     cout << program.size();
-//     return 0;
-// }
+
 
 int main()
 {
