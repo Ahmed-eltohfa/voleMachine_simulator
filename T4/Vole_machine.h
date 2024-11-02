@@ -41,7 +41,10 @@ private:
     const int memorySize = 256; // Example size (can be adjusted)
 
 public:
-    Memory() : memoryCells(memorySize, 0) {} // Initialize memory with zeros
+    Memory() : memoryCells(memorySize, 0)
+    {
+        fill(memoryCells.begin(), memoryCells.end(), 0);
+    } // Initialize memory with zeros
 
     int load(int address) const;
     void store(int address, int value);
@@ -219,11 +222,9 @@ class RotateInstruction : public Instruction
 private:
     int reg;
     int steps;
-    
-    
 
 public:
-    RotateInstruction(int reg, int rs ) : reg(reg), steps(rs) {}
+    RotateInstruction(int reg, int rs) : reg(reg), steps(rs) {}
 
     void execute(Machine &machine) override;
 };

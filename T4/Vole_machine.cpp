@@ -21,6 +21,12 @@ void Machine::fetchAndExecute()
     {
         instruction = instruction.substr(0, 2) + "0" + instruction.substr(2, 3);
     }
+    if (instruction.length() < 4)
+    {
+        cout << "Invalid Instuction\n";
+        halt();
+        return;
+    }
 
     cout << "ins: " << instruction << "\n";
     char op = instruction[0];
@@ -80,7 +86,7 @@ void Machine::fetchAndExecute()
         Instruction *temp = new AddInstruction(ins);
         ir.set(temp);
     }
-    else if (op == '7' )
+    else if (op == '7')
     {
         OrInstruction ins(reg, three, four);
         Instruction *temp = new OrInstruction(ins);
@@ -100,7 +106,7 @@ void Machine::fetchAndExecute()
     }
     else if (op == 'A' || op == 'a')
     {
-        RotateInstruction ins(reg, four );
+        RotateInstruction ins(reg, four);
         Instruction *temp = new RotateInstruction(ins);
         ir.set(temp);
     }
@@ -115,11 +121,12 @@ void Machine::fetchAndExecute()
         halt();
         return;
     }
-    else 
+    else
     {
+        halt();
         return;
     }
-    
+
     ir.get()->execute(*this);
     delete ir.get();
     pc.increment();
@@ -263,8 +270,7 @@ void XorInstruction::execute(Machine &machine)
     machine.getRegister(regDst).setValue(result);
 }
 
-
 void RotateInstruction::execute(Machine &machine)
 {
-    machine.getRegister(reg).setValue( machine.getRegister(reg).getValue()  >> steps );
+    machine.getRegister(reg).setValue(machine.getRegister(reg).getValue() >> steps);
 }
