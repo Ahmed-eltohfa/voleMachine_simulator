@@ -158,6 +158,18 @@ public:
     void execute(Machine &machine) override;
 };
 
+class DJumpInstruction : public Instruction
+{
+private:
+    int registerIndex;
+    int address;
+
+public:
+    DJumpInstruction(int reg, int addr) : registerIndex(reg), address(addr) {}
+
+    void execute(Machine &machine) override;
+};
+
 class HaltInstruction : public Instruction
 {
 public:

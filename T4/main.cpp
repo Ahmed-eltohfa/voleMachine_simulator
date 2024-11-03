@@ -26,18 +26,6 @@ vector<string> loadProgramFromFile(const string &filePath)
     return program;
 }
 
-// int main()
-// {
-//     Machine voleMachine;       // Initialize the Vole machine object
-//     vector<string> program(1); // Stores the loaded program
-//     bool exitFlag = false;
-//     int choice;
-//     program = loadProgramFromFile("instruction.txt");
-//     cout << "hello ";
-//     cout << program.size();
-//     return 0;
-// }
-
 int main()
 {
     Machine voleMachine;       // Initialize the Vole machine object
@@ -63,8 +51,8 @@ int main()
             if (!program.empty())
             {
                 voleMachine.loadProgram(program);
-                cout << "Program loaded successfully." << "\n";
-                voleMachine.getPC().setValue(0);
+                cout << "\nProgram loaded successfully." << "\n";
+                voleMachine.getPC().setValue(16);
                 voleMachine.start();
             }
         }
@@ -83,7 +71,7 @@ int main()
                     voleMachine.displayStatus();
                     if (voleMachine.getRunning() == false)
                     {
-                        cout << "End Of Program\n";
+                        cout << "\n END OF PROGRAM\n";
                         break;
                     }
 
